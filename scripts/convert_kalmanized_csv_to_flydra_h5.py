@@ -19,6 +19,8 @@ parser.add_argument('data_dir',type=str,
                     help='input directory', nargs=1)
 parser.add_argument('--2d-only', action='store_true',
                     help='convert only the 2D data')
+parser.add_argument('--no-calibration', action='store_true',
+                    help='do not copy the calibration')
 parser.add_argument('--no-delete', action='store_true',
                     help='do not delete the original directory')
 args = parser.parse_args()
@@ -326,7 +328,8 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
     if not vars(args)['2d_only']:
         converted.extend(do_experiment_info(data_dir, h5file))
     converted.extend(do_cam_info(data_dir, h5file))
-    converted.extend(do_calibration(data_dir, h5file))
+    if not vars(args)['no_calibration']:
+        converted.extend(do_calibration(data_dir, h5file))
     if not vars(args)['2d_only']:
         converted.extend(do_kalman_estimates(data_dir, h5file))
 
