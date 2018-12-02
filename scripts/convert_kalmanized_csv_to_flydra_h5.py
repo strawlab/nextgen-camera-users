@@ -121,13 +121,12 @@ def do_ml_estimates(data_dir, h5file):
 
     ml_estimates_fname = os.path.join(computed_dir(data_dir), 'ML_estimates.csv')
     assert(os.path.exists(ml_estimates_fname))
-    h5_obs = h5file.create_table(
-        h5file.root,'ML_estimates', flydra_kalman_utils.FilteredObservations,
-        "observations of tracked object")
-    ml_estimates_df = pd.read_csv(ml_estimates_fname)
-    for _,row in ml_estimates_df.iterrows():
-        save_row(h5_obs.row, row, h5_obs.colnames)
 
+    ml_estimates_df = pd.read_csv(ml_estimates_fname)
+    data = convert_pd_to_np(ml_estimates_df)
+    h5file.create_table(
+        h5file.root,'ML_estimates', description=data,
+        title="observations of tracked object")
     return [orig_src_fname, ml_estimates_2d_idxs_fname, ml_estimates_fname]
 
 def compute_mean_fps(data_dir, h5file):
