@@ -32,6 +32,15 @@ dest_filename = data_dir + '.h5'
 d2d_r0 = None
 d2d_r1 = None
 
+def convert_pd_to_np(df):
+    colnames = tuple(df.columns)
+    n = len(df)
+    formats = [df[colname].values.dtype.type for colname in colnames]
+    data = np.zeros(n, dtype={'names': colnames, 'formats': formats})
+    for colname in colnames:
+        data[colname] = df[colname]
+    return data
+
 def recursive_get_files(dirname):
     """get all filenames in directory, including recursively in subdirs"""
     result = []
@@ -75,14 +84,7 @@ def do_d2d(data_dir, h5file):
     d2d_r0 = data2d_df.iloc[0]
     d2d_r1 = data2d_df.iloc[-1]
 
-    # print data2d_df.head()
-
-    colnames = ('camn', 'frame', 'timestamp', 'cam_received_timestamp', 'x', 'y', 'area', 'slope', 'eccentricity', 'frame_pt_idx', 'cur_val', 'mean_val', 'sumsqf_val')
-    n = len(data2d_df)
-    data = np.zeros(n, dtype={'names':colnames,
-                          'formats':('u1', 'i8', 'f8', 'f8', 'f4', 'f4', 'f4', 'f4', 'f4', 'u1', 'u1', 'f4', 'f4')})
-    for colname in colnames:
-        data[colname] = data2d_df[colname]
+    data = convert_pd_to_np(data2d_df)
 
     h5file.create_table(h5file.root,
         'data2d_distorted',
