@@ -5,6 +5,7 @@ import os
 import subprocess
 import glob
 import argparse
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -232,35 +233,25 @@ def do_calibration(data_dir, h5file):
 
 def do_kalman_estimates(data_dir, h5file):
     converted = []
-    dynamic_model_name = 'EKF mamarama, units: mm'
-    print('using %s' % (dynamic_model_name,))
-    kalman_saver_info_instance = flydra_kalman_utils.KalmanSaveInfo(
-        name=dynamic_model_name)
-    kalman_estimates_description = kalman_saver_info_instance.get_description()
-
-
-    h5_xhat = h5file.create_table(
-        h5file.root,'kalman_estimates',
-        kalman_estimates_description,
-        "Kalman a posteriori estimates of tracked object",
-    )
-    h5_xhat.attrs.dynamic_model_name = dynamic_model_name
+    warnings.warn('not converting dynamic model')
 
     orig_src_fname = os.path.join(data_dir, 'kalman_estimates.csv')
-    data_csv_fname = os.path.join(computed_dir(data_dir), 'contiguous_kalman_estimates.csv')
+    data_csv_fname = os.path.join(computed_dir(data_dir),
+        'contiguous_kalman_estimates.csv')
     converted.extend([orig_src_fname, data_csv_fname])
 
     try:
         kalman_estimates_df = pd.read_csv(data_csv_fname)
-
     except pd.io.common.EmptyDataError as err:
         kalman_estimates_df = None
-        # print kalman_estimates_df.head()
 
     if kalman_estimates_df is not None:
-        for _,row in kalman_estimates_df.iterrows():
-            save_row(h5_xhat.row, row, h5_xhat.colnames)
-
+        data = convert_pd_to_np(kalman_estimates_df)
+        h5file.create_table(h5file.root,
+            'kalman_estimates',
+            description=data,
+            title="Kalman a posteriori estimates of tracked object",
+        )
     return converted
 
 def do_host_clock_info(data_dir, h5file):
