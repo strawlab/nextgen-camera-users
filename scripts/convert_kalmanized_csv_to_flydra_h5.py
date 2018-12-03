@@ -302,7 +302,7 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
         print("converting 2D data only")
     else:
         if not os.path.exists(computed_dir(data_dir)):
-            cmd = "compute-flydra1-compat %s" % data_dir
+            cmd = 'compute-flydra1-compat "%s"' % data_dir
             print(cmd)
             subprocess.check_call(cmd, shell=True)
         else:
