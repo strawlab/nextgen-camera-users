@@ -226,6 +226,10 @@ def do_cam_info(data_dir, h5file):
 
 def do_calibration(data_dir, h5file):
     reconstruct_fname = os.path.join(data_dir, 'calibration.xml')
+    if not os.path.exists(reconstruct_fname):
+        print("Cannot convert non-existant calibration file "
+            "(hint: run with --no-calibration)", file=sys.stderr)
+        sys.exit(1)
     reconstructor = flydra_core.reconstruct.Reconstructor(reconstruct_fname)
     reconstructor.save_to_h5file(h5file)
     return [reconstruct_fname]
