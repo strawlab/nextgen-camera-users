@@ -1,3 +1,15 @@
+## 0.20.25 - 2019-03-25
+
+### Changed
+
+* In `fview2` (all variants), CSV files from object detection have a new, more
+  efficient format.
+
+### Added
+
+* In `fview2` (all variants), the maximum framerate for saving data to CSV files
+  may be specified.
+
 ## 0.20.22 - 2019-02-24
 
 ### Changed
