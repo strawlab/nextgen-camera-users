@@ -1,3 +1,28 @@
+## 0.20.28 - 2019-06-01
+
+### Added
+
+* Created several ROS launch example files. They are in this repository in the
+  `ros-launchfile-examples` directory.
+
+### Fixed
+
+* Fixed some bugs in the way .mkv files were created. There was a bug in which
+  recordings longer than ~30 minutes were truncated at ~30 minutes. And another
+  bug was that, when viewing the recorded video, skipping to a particular point
+  in time and viewing the total duration did not work. With some light testing,
+  these should both be fixed now.
+* Fixed setting of acquisition frame rate on older GigE cameras.
+* Provide mime type for .js files in fview, which stops browser warning about
+  empty mime type.
+
+### Changed
+
+* For `fview2` (all variants, Pylon drivers), upgrade Pylon to version
+  5.2.0.13457.
+* In `flydra2-mainbrain`, changed the `--addr` command-line argument to
+  `--lowlatency-camdata-udp-addr`.
+
 ## 0.20.25 - 2019-03-25
 
 ### Changed
