@@ -1,3 +1,10 @@
+## 0.20.29 - 2019-06-06
+
+### Changed
+
+* For `fview2` (all variants), build with jemalloc memory allocator. This
+  appears to fix a "corrupted size vs. prev_size" error.
+
 ## 0.20.28 - 2019-06-01
 
 ### Added
