@@ -308,7 +308,7 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
         if not os.path.exists(computed_dir(data_dir)):
             cmd = ['compute-flydra1-compat', data_dir]
             print(' '.join(cmd))
-            subprocess.check_call(cmd, shell=True)
+            subprocess.check_call(cmd)
         else:
             print("flydra1 compat data already computed, not re-computing.")
 
