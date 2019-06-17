@@ -76,8 +76,17 @@ def mysplit(s,sep):
         return []
     return r
 
+def pick_csvgz_or_csv(csv_path):
+    assert(csv_path.endswith(".csv"))
+    csv_gz_path = csv_path + ".gz"
+    if os.path.exists(csv_gz_path):
+        return csv_gz_path
+    else:
+        return csv_path
+
 def do_d2d(data_dir, h5file):
     data_2d_fname = os.path.join(data_dir, 'data2d_distorted.csv')
+    data_2d_fname = pick_csvgz_or_csv(data_2d_fname)
     data2d_df = pd.read_csv(data_2d_fname)
 
     # cache first and last rows
@@ -97,12 +106,14 @@ def do_d2d(data_dir, h5file):
 
 def do_ml_estimates(data_dir, h5file):
     data_csv_fname = os.path.join(data_dir, 'kalman_estimates.csv')
+    data_csv_fname = pick_csvgz_or_csv(data_csv_fname)
     if not os.path.exists(data_csv_fname):
         print('no kalman estimates, not converting ML_estimates')
         return []
 
     # This file was used to create the vlarray_csv file
     orig_src_fname = os.path.join(data_dir, 'data_association.csv')
+    orig_src_fname = pick_csvgz_or_csv(orig_src_fname)
     ml_estimates_2d_idxs_fname = os.path.join(computed_dir(data_dir), 'ML_estimates_2d_idxs.vlarray_csv')
     h5_2d_obs = h5file.create_vlarray(
         h5file.root,
@@ -120,6 +131,7 @@ def do_ml_estimates(data_dir, h5file):
                 h5_2d_obs.append( camns_and_idxs )
 
     ml_estimates_fname = os.path.join(computed_dir(data_dir), 'ML_estimates.csv')
+    ml_estimates_fname = pick_csvgz_or_csv(ml_estimates_fname)
     assert(os.path.exists(ml_estimates_fname))
 
     ml_estimates_df = pd.read_csv(ml_estimates_fname)
@@ -144,6 +156,7 @@ def compute_mean_fps(data_dir, h5file):
 
 def do_textlog(data_dir, h5file):
     textlog_fname = os.path.join(data_dir, 'textlog.csv')
+    textlog_fname = pick_csvgz_or_csv(textlog_fname)
     textlog_df = pd.read_csv(textlog_fname)
 
     orig_m0 = textlog_df['message'][0]
@@ -183,6 +196,7 @@ def do_textlog(data_dir, h5file):
 
 def do_trigger_clock_info(data_dir, h5file):
     trigger_clock_info_fname = os.path.join(data_dir, 'trigger_clock_info.csv')
+    trigger_clock_info_fname = pick_csvgz_or_csv(trigger_clock_info_fname)
     try:
         trigger_clock_info_df = pd.read_csv(trigger_clock_info_fname)
     except ValueError as err:
@@ -199,6 +213,7 @@ def do_trigger_clock_info(data_dir, h5file):
 
 def do_experiment_info(data_dir, h5file):
     experiment_info_fname = os.path.join(data_dir, 'experiment_info.csv')
+    experiment_info_fname = pick_csvgz_or_csv(experiment_info_fname)
     try:
         experiment_info_df = pd.read_csv(experiment_info_fname)
     except ValueError as err:
@@ -215,6 +230,7 @@ def do_experiment_info(data_dir, h5file):
 
 def do_cam_info(data_dir, h5file):
     cam_info_fname = os.path.join(data_dir, 'cam_info.csv')
+    cam_info_fname = pick_csvgz_or_csv(cam_info_fname)
     cam_info_df = pd.read_csv(cam_info_fname)
     cam_info_table = h5file.create_table(h5file.root,
         'cam_info', flydra_core.data_descriptions.CamSyncInfo, "Cam Sync Info")
@@ -239,8 +255,10 @@ def do_kalman_estimates(data_dir, h5file):
     warnings.warn('not converting dynamic model')
 
     orig_src_fname = os.path.join(data_dir, 'kalman_estimates.csv')
+    orig_src_fname = pick_csvgz_or_csv(orig_src_fname)
     data_csv_fname = os.path.join(computed_dir(data_dir),
         'contiguous_kalman_estimates.csv')
+    data_csv_fname = pick_csvgz_or_csv(data_csv_fname)
     converted.extend([orig_src_fname, data_csv_fname])
 
     try:
@@ -265,6 +283,7 @@ def do_host_clock_info(data_dir, h5file):
         "Host Clock Info")
 
     host_clock_info_fname = os.path.join(data_dir, 'host_clock_info.csv')
+    host_clock_info_fname = pick_csvgz_or_csv(host_clock_info_fname)
     converted = []
     if os.path.exists(host_clock_info_fname):
         try:
