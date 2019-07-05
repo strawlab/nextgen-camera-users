@@ -1,3 +1,19 @@
+## unreleased
+
+### Fixed
+
+* Do not draw an orientation in web browser when no theta detected.
+
+### Added
+
+* Added `Polygon` to possible `valid_region` types.
+* Updated to use libvpx 1.8 for encoding MKV videos.
+* Add checkerboard calibration within fview2
+
+### Changed
+
+* `flydra2` now saves all output as `.csv.gz` (not `.csv`) files.
+
 ## 0.20.29 - 2019-06-06
 
 ### Changed
