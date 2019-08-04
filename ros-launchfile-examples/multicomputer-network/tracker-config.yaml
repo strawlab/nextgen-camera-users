@@ -7,7 +7,6 @@ bright_non_gaussian_cutoff: 255
 bright_non_gaussian_replacement: 5
 bg_update_interval: 100
 diff_threshold: 5
-threshold_fraction: 0.5
 use_cmp: true
 max_num_points: 1
 feature_window_size: 25
