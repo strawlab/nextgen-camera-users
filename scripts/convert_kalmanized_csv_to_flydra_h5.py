@@ -354,7 +354,8 @@ hmm_files = set(converted) - set(all_files)
 if len(hmm_files) > 0:
     raise RuntimeError("Delete file(s) that do not exist? %s"%hmm_files)
 
-leftover_files = set(all_files) - set(converted)
+ignored = [os.path.join(data_dir,'braid_metadata.yml')]
+leftover_files = set(all_files) - (set(converted) | set(ignored))
 if len(leftover_files) > 0:
     print('ERROR: unconverted file(s) detected: %s'%leftover_files, file=sys.stderr)
     sys.exit(1)
@@ -362,4 +363,7 @@ if len(leftover_files) > 0:
 if delete_original:
     for f in converted:
         os.unlink(f)
+    for f in ignored:
+        if os.path.exists(f):
+            os.unlink(f)
     recursive_rmdir(data_dir)
