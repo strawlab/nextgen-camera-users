@@ -6,6 +6,8 @@ import subprocess
 import glob
 import argparse
 import warnings
+import tempfile
+import zipfile
 
 import numpy as np
 import pandas as pd
@@ -16,8 +18,8 @@ from flydra_analysis.a2.tables_tools import open_file_safe
 import scipy
 
 parser = argparse.ArgumentParser()
-parser.add_argument('data_dir',type=str,
-                    help='input directory', nargs=1)
+parser.add_argument('data_src',type=str,
+                    help='input directory or file', nargs=1)
 parser.add_argument('--2d-only', action='store_true',
                     help='convert only the 2D data')
 parser.add_argument('--no-calibration', action='store_true',
@@ -25,10 +27,10 @@ parser.add_argument('--no-calibration', action='store_true',
 parser.add_argument('--no-delete', action='store_true',
                     help='do not delete the original directory')
 args = parser.parse_args()
-data_dir = args.data_dir[0]
-if data_dir.endswith(os.sep):
-    data_dir = data_dir[:-1]
-dest_filename = data_dir + '.h5'
+data_src = args.data_src[0]
+if data_src.endswith(os.sep):
+    data_src = data_src[:-1]
+dest_filename = data_src + '.h5'
 
 d2d_r0 = None
 d2d_r1 = None
@@ -313,9 +315,18 @@ def do_images(data_dir, h5file):
         converted.append(fname)
     return converted
 
-if not os.path.exists(data_dir):
-    print('ERROR: input does not exist: %s'%data_dir, file=sys.stderr)
+if not os.path.exists(data_src):
+    print('ERROR: input does not exist: %s'%data_src, file=sys.stderr)
     sys.exit(1)
+
+if not os.path.isdir(data_src):
+    assert(data_src.endswith('.braidz'))
+    zipname = data_src
+    data_dir = tempfile.mkdtemp(suffix='.braid')
+    archive = zipfile.ZipFile(zipname, mode='r')
+    archive.extractall(data_dir)
+else:
+    data_dir = data_src
 
 delete_original = not args.no_delete
 with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
