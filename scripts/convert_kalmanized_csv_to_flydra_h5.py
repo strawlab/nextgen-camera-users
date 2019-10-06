@@ -21,7 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('data_src',type=str,
                     help='input directory or file', nargs=1)
 parser.add_argument('--2d-only', action='store_true',
-                    help='convert only the 2D data')
+                    help='convert only the 2D data, even if 3D data present')
 parser.add_argument('--no-calibration', action='store_true',
                     help='do not copy the calibration')
 parser.add_argument('--no-delete', action='store_true',
@@ -332,7 +332,14 @@ delete_original = not args.no_delete
 with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
                     delete_on_error=True) as h5file:
 
-    if vars(args)['2d_only']:
+    do_2d_only = vars(args)['2d_only']
+
+    kest_csv_fname = os.path.join(data_dir, 'kalman_estimates.csv')
+    kest_csv_gz_fname = os.path.join(data_dir, 'kalman_estimates.csv.gz')
+    if not (os.path.exists(kest_csv_fname) or os.path.exists(kest_csv_gz_fname)):
+        do_2d_only = True
+
+    if do_2d_only:
         print("converting 2D data only")
     else:
         if not os.path.exists(computed_dir(data_dir)):
@@ -345,18 +352,16 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
     converted = []
     converted.extend(do_images(data_dir, h5file))
     converted.extend(do_host_clock_info(data_dir, h5file))
-    if not vars(args)['2d_only']:
+    if not do_2d_only:
         converted.extend(do_ml_estimates(data_dir, h5file))
     converted.extend(do_d2d(data_dir, h5file))
     converted.extend(do_textlog(data_dir, h5file))
-    if not vars(args)['2d_only']:
-        converted.extend(do_trigger_clock_info(data_dir, h5file))
-    if not vars(args)['2d_only']:
-        converted.extend(do_experiment_info(data_dir, h5file))
+    converted.extend(do_trigger_clock_info(data_dir, h5file))
+    converted.extend(do_experiment_info(data_dir, h5file))
     converted.extend(do_cam_info(data_dir, h5file))
-    if not vars(args)['no_calibration']:
+    if not do_2d_only:
         converted.extend(do_calibration(data_dir, h5file))
-    if not vars(args)['2d_only']:
+    if not do_2d_only:
         converted.extend(do_kalman_estimates(data_dir, h5file))
 
 all_files = recursive_get_files(data_dir)
