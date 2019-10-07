@@ -8,6 +8,7 @@ import argparse
 import warnings
 import tempfile
 import zipfile
+import errno
 
 import numpy as np
 import pandas as pd
@@ -342,10 +343,27 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
     if do_2d_only:
         print("converting 2D data only")
     else:
+        convert_program = 'compute-flydra1-compat'
         if not os.path.exists(computed_dir(data_dir)):
-            cmd = ['compute-flydra1-compat', data_dir]
-            print(' '.join(cmd))
+            cmd = [convert_program,'--help']
+            devnull = open('/dev/null',mode='w')
+            try:
+                subprocess.check_call(cmd, stdout=devnull, stderr=devnull)
+            except OSError as err:
+                if err.errno == errno.ENOENT:
+                    print(("Error: {} is not on the PATH."
+                        "\n\nHint: this is required to convert the 3D data. Either "
+                        "place the program on the PATH or run with '--2d-only' "
+                        "to prevent converting the 3D data.").format(convert_program,),
+                        file=sys.stderr)
+                    sys.exit(1)
+                else:
+                    raise err
+
+            cmd = [convert_program, data_dir]
+            print("Running: {}".format(' '.join(cmd),))
             subprocess.check_call(cmd)
+            print("success running {}.".format(convert_program,))
         else:
             print("flydra1 compat data already computed, not re-computing.")
 
