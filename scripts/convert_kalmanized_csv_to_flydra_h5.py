@@ -354,7 +354,8 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
                     print(("Error: {} is not on the PATH."
                         "\n\nHint: this is required to convert the 3D data. Either "
                         "place the program on the PATH or run with '--2d-only' "
-                        "to prevent converting the 3D data.").format(convert_program,),
+                        "to prevent converting the 3D data. This program "
+                        "is included in the braid-offline package.").format(convert_program,),
                         file=sys.stderr)
                     sys.exit(1)
                 else:

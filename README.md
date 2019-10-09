@@ -36,10 +36,9 @@ We can do the above but making use of bash variables to save typing later `BRAID
     DATAFILE="$BRAIDZ_FILE.h5"
     python ~/src/nextgen-camera-users/scripts/convert_kalmanized_csv_to_flydra_h5.py $BRAIDZ_FILE
 
-Note that this conversion requires the program `compute-flydra1-compat` to be on your path if
-you are converting 3D trajectories.
-
-
+Note that this conversion requires the program `compute-flydra1-compat` (from
+the `braid-offline` package) to be on your path if you are converting 3D
+trajectories.
 
 ### Run MultiCamSelfCal on data collected with Braid
 
