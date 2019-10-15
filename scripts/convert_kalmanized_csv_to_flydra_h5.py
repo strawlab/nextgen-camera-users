@@ -16,7 +16,7 @@ import pandas as pd
 import flydra_core.kalman.flydra_kalman_utils as flydra_kalman_utils
 import flydra_core.reconstruct
 from flydra_analysis.a2.tables_tools import open_file_safe
-import scipy
+import scipy #had to import as "scipy.misc" and install version 1.1.0, since after 1.2.0 imread does not seem to work
 
 parser = argparse.ArgumentParser()
 parser.add_argument('data_src',type=str,
