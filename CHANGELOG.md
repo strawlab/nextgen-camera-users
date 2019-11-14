@@ -1,3 +1,39 @@
+## 0.7.0 - unreleased
+
+### Added
+
+* [strand-cam, braid] In UI page, title and info link to Straw Lab website. A
+  "loading..." indication is shown prior to main UI being loaded.
+
+### Fixed
+
+* [strand-cam] Do not print information about how to workaround a VLC bug by
+  copying the h264 stream using ffmpeg. We discovered that this will lose
+  precise timestamps and so it is dangerous and should not be done.
+
+* [braid] Do not crash when attempting 3D tracking and some cameras are not in
+  the calibration. (The data from these cameras will simply not contribute to
+  3d tracking.)
+
+* [braid] Prevent occasional crash with the involving triggerbox_comms thread.
+
+## 0.6.0 - 2019-10-25
+
+### Fixed
+
+* [braid] Fixed some a bug in which Braid would crash due to a
+  `NotDefinitePositive` error when doing 3D tracking.
+
+## 0.5.0 - 2019-10-22
+
+### Added
+
+* [strand-cam] On systems with NVIDIA graphics cards, enable recording to H264
+  encoded MKV files using hardware encoding, thus using hardly any CPU
+  resources.
+
+# ------------------------------------------------------------------------
+
 ## unreleased
 
 ### Fixed
