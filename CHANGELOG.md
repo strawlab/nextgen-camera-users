@@ -1,9 +1,24 @@
-## 0.7.0 - unreleased
+## 0.7.1 - 2019-11-25
+
+### Changed
+
+ * [strand-cam] change Event Source URL to `/strand-cam-events` (changed from
+   `/strand-camevents`, which was a typo. Originally this was `/fview2-events`).
+   The event name is also changed to `strand-cam` (changed from `bui_backend`).
+
+ * [braid] change Event Source URL to `/braid-events` (changed from
+   `/events`). Note that this does not affect the realtime pose events, which
+   are at a different URL and remain at `/events`. The event name is also
+   changed to `braid` (changed from `bui_backend`).
 
 ### Added
 
 * [strand-cam, braid] In UI page, title and info link to Straw Lab website. A
   "loading..." indication is shown prior to main UI being loaded.
+
+* [braid] Allow setting uuid in experiment_info table via HTTP call.
+
+* Decreased logging level for many messages to reduce console spam.
 
 ### Fixed
 
@@ -16,6 +31,12 @@
   3d tracking.)
 
 * [braid] Prevent occasional crash with the involving triggerbox_comms thread.
+
+### Note on version numbers
+
+Version 0.7.0 was not publicly released but was internally released on
+2019-11-21. Internal testing revealed bugs that were fixed before the 0.7.1
+release.
 
 ## 0.6.0 - 2019-10-25
 

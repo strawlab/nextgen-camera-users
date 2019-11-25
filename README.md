@@ -5,7 +5,7 @@ Lab.
 
 ## Downloads
 
-The most recent files can be downloaded [here](https://www.dropbox.com/sh/x1xbephf6pj8sau/AADdy2NB5erGRk-dB2M8B86Ta?dl=0).
+The most recent files can be downloaded [here](https://github.com/strawlab/nextgen-camera-users/releases).
 
 ## Live 3D pose estimates
 
