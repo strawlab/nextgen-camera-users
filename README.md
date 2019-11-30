@@ -16,6 +16,11 @@ of parsing live, low-latency 3D tracking data.
 
 Remember, you can view your `.braidz` file at https://braidz.strawlab.org/.
 
+## Questions, requests for help, etc.
+
+ - [the online forum](https://groups.google.com/forum/#!forum/multicams)
+ - [Github issues](https://github.com/strawlab/nextgen-camera-users/issues)
+
 ### Convert `.braidz` file to flydra mainbrain `.h5` file
 
 By converting from `.braidz` to a mainbrain `.h5` file, you can use the
