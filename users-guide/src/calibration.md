@@ -24,12 +24,12 @@ set in Strand Cam for each camera individually. Note that if you intend to run
 at 100 frames per second, exposure times must be less than 10 milliseconds.
 
 Try to a luminance distribution which extends across the entire dynamic range of
-your sensor (from insity values 0 to 255) with very little clipping.
+your sensor (from intensity values 0 to 255) with very little clipping.
 
 ## Step 2: run "Checkerboard Calibration" to get the camera intrinsic parameters
 
 In Strand Cam, there is a region called "Checkerboard Calibration" which allows
-you to calibrate the camera intinsic parameters. Show a checkerboard to the
+you to calibrate the camera intrinsic parameters. Show a checkerboard to the
 camera. You must enter your the checkerboard parameters into the user interface.
 For example, a standard 8x8 checkerboard would have 7x7 corners. Try to show the
 checkerboard at different distances and angles. Do not forget to show the
