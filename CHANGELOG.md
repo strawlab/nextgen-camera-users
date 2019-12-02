@@ -1,3 +1,27 @@
+## 0.7.2 - 2019-12-02
+
+### Added
+
+* [strand-cam] Print backtraces for some errors, even without RUST_BACKTRACE
+  environment variable being set.
+
+* [braidz.strawlab.org] Link to main braid page at https://strawlab.org/braid
+
+### Fixed
+
+* [strand-cam] Shutdown nicely when receiving Ctrl-C.
+
+* [braid] Shutdown nicely when receiving Ctrl-C, including finishing saving
+  of .braid directory into .braidz file.
+
+* [braid] Fix UI to blink when saving .braidz file. Fix UI to show ".braidz
+  file" (instead of ".braid directory").
+
+* [braidz.strawlab.org,compute-flydra1-compat] Make .braidz parsing more robust.
+  In particular, if a recording was terminated abruptly, the internal CSV files
+  may have an error in the final row. In that case, now we skip the final row
+  rather than returning an error.
+
 ## 0.7.1 - 2019-11-25
 
 ### Changed
