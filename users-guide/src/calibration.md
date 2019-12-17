@@ -164,8 +164,20 @@ You can view these results with:
     DATAFILE_RETRACKED=`python -c "print '${DATAFILE}'[:-3]"`.kalmanized.h5
     flydra_analysis_plot_timeseries_2d_3d ${DATAFILE} -k ${DATAFILE_RETRACKED} --disable-kalman-smoothing
 
-Now you have a working calibration, which is NOT aligned or scaled to the flycube coordinate system, but is able to track. Scaling can be quite important for good tracking.
+Now you have a working calibration, which is NOT aligned or scaled to the
+flycube coordinate system, but is able to track. Scaling can be quite important
+for good tracking.
 
-Next we will align the calibration.
+Next, using this new calibration, collect a dataset which outlines the geometry
+of your arena. We will use this to align and scale the unaligned calibration to
+an aligned calibration. Easist is to acquire this dataset directly by running
+Braid with the new calibration. Alternatively, one can use a pre-existing 2D dataset
+and re-track it with `flydra_kalmanize` as above. We will call this dataset
+for alignment `${NEW_TRACKED_DATA}`.
 
-    flydra_analysis_calibration_align_gui --stim-xml ~/src/rust-cam/_submodules/flydra/flydra_analysis/flydra_analysis/a2/sample_bowl.xml ${DATAFILE_RETRACKED}
+Finally, with this new dataset for alignment, we render the 3D tracks with a 3D
+model and adjust the alignement parameters by hand in a GUI. Here we align
+our newly tracked data in file `${NEW_TRACKED_DATA}` against the `sample_bowl.xml` file from
+[here](https://github.com/strawlab/flydra/blob/master/flydra_analysis/flydra_analysis/a2/sample_bowl.xml).
+
+    flydra_analysis_calibration_align_gui --stim-xml ~/src/flydra/flydra_analysis/flydra_analysis/a2/sample_bowl.xml ${NEW_TRACKED_DATA}
