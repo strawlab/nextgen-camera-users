@@ -174,7 +174,7 @@ The above example calibration is a good one.
 
 Convert this to XML:
 
-    flydra_analysis_calibration_to_xml {DATAFILE}.recal/result > new-calibration-name.xml
+    flydra_analysis_calibration_to_xml ${DATAFILE}.recal/result > new-calibration-name.xml
 
 You may now use this new calibration, saved as an XML file, as the calibration
 for Braid. Specify the filename of your new XML file as `cal_fname` in the
