@@ -18,3 +18,5 @@ hardware to synchronize the cameras. This is based on an Arduino
 microcontroller.
 
 ### Trigger cables
+
+TODO: write this and describe how to check everything is working.

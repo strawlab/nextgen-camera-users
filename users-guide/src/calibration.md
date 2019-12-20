@@ -42,7 +42,14 @@ this calibration are saved to the directory
 
 Repeat this for all cameras before proceeding to the next step.
 
-## Step 3: collect calibration data and run MCSC
+## Step 3: collect calibration data and run MultiCamSelfCal (MCSC)
+
+To calibrate Braid, we use
+[MultiCamSelfCal](https://github.com/strawlab/MultiCamSelfCal). This is a
+software package which takes simultaneously captured images of an LED moving
+through a volume to create a single calibration for all cameras.
+
+### Acquire a dataset for MultiCamSelfCal
 
 Room lights should be off.
 
@@ -53,7 +60,15 @@ saving.
 
 ### Convert `.braidz` file to flydra mainbrain `.h5` file
 
-By converting from `.braidz` to a mainbrain `.h5` file, you can use the
+> Note: from here in the document, there are many commands used from
+> [Flydra](https://github.com/strawlab/flydra). While Braid itself runs without
+> needing Flydra in any way, performing calibration and other data analysis
+> steps currently requires the use of Flydra. Specifically, the
+> `flydra_analysis` package is required. Please see
+> [here](https://github.com/strawlab/flydra#installation) for instructions about
+> Flydra installation.
+
+By converting from `.braidz` to a Flydra mainbrain `.h5` file, you can use the
 wide range of analysis programs from [flydra](https://github.com/strawlab/flydra).
 
 For example, let's say you have the file `20190924_161153.braidz` saved by the
@@ -114,7 +129,7 @@ rough guidelines to provide some orientation:
   procedure being very slow. The `--use-nth-observation` command line argument can be used
   to change the number of points used.
 
-After running succesfully, the console output should look something like this:
+After running successfully, the console output should look something like this:
 
 ```
 ********** After 0 iteration *******************************************
@@ -151,9 +166,21 @@ Important things to watch for:
 - The mean reprojection error should be low. Certainly less than
   1 pixel and ideally less than 0.5 pixels as shown here.
 
-- The low reprojeciton error should be low across all cameras.
+- The reprojection error should be low across all cameras.
 
 The above example calibration is a good one.
+
+### Convert your new calibration to an XML file which can be used by Braid
+
+Convert this to XML:
+
+    flydra_analysis_calibration_to_xml {DATAFILE}.recal/result > new-calibration-name.xml
+
+You may now use this new calibration, saved as an XML file, as the calibration
+for Braid. Specify the filename of your new XML file as `cal_fname` in the
+`[mainbrain]` section of your Braid configuration `.toml` file.
+
+### With the new calibration, perform offline tracking the data used to calibrate.
 
 Using this calibration, you can perform 3D tracking of the data with:
 
@@ -168,9 +195,11 @@ Now you have a working calibration, which is NOT aligned or scaled to the
 flycube coordinate system, but is able to track. Scaling can be quite important
 for good tracking.
 
+### Align your new calibration
+
 Next, using this new calibration, collect a dataset which outlines the geometry
 of your arena. We will use this to align and scale the unaligned calibration to
-an aligned calibration. Easist is to acquire this dataset directly by running
+an aligned calibration. Easiest is to acquire this dataset directly by running
 Braid with the new calibration. Alternatively, one can use a pre-existing 2D dataset
 and re-track it with `flydra_kalmanize` as above. We will call this dataset
 for alignment `${NEW_TRACKED_DATA}`.
