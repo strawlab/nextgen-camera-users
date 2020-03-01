@@ -1,3 +1,33 @@
+## 0.7.4 - 2020-03-01
+
+### Added
+
+* [strand-cam] Support online detection of April Tags and saving results
+  to .csv file.
+
+* [strand-cam] Shutdown nicely when receiving SIGTERM (in addition to previous support
+  for shutdown on SIGINT when Ctrl-C happens)
+
+* [braid] Shutdown nicely when receiving SIGTERM (in addition to previous support
+  for shutdown on SIGINT when Ctrl-C happens)
+
+* Added new demo script [`./scripts/change-tracking-settings-demo.py`](./scripts/change-tracking-settings-demo.py).
+
+* Many internal libraries updated to latest release to support rust async. This
+  includes updating to tokio 0.2 and hyper 0.13. No regressions have been seen
+  in testing.
+
+### Changed
+
+* [strand-cam] .zip file with .deb packages is renamed to
+  `rust-cam-xenial-debs-build-${CI_COMMIT_SHA}`
+
+### Note on version numbers
+
+Version 0.7.3 was not publicly released but was internally released on
+2019-12-02. It differed from the 0.7.2 release only in that it allows disabling
+the Kalman filter based tracking in the camtrig variant of strand-cam
+
 ## 0.7.2 - 2019-12-02
 
 ### Added
