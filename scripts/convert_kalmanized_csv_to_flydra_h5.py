@@ -12,11 +12,11 @@ import errno
 
 import numpy as np
 import pandas as pd
+import imageio
 
 import flydra_core.kalman.flydra_kalman_utils as flydra_kalman_utils
 import flydra_core.reconstruct
 from flydra_analysis.a2.tables_tools import open_file_safe
-import scipy
 
 parser = argparse.ArgumentParser()
 parser.add_argument('data_src',type=str,
@@ -309,7 +309,7 @@ def do_images(data_dir, h5file):
 
     for fname in image_files:
         cam_id = os.path.splitext(os.path.split(fname)[1])[0]
-        image = scipy.misc.imread(fname)
+        image = imageio.imread(fname)
         h5file.create_array( img, cam_id, image, 'sample image from %s'%cam_id )
         converted.append(fname)
     return converted
