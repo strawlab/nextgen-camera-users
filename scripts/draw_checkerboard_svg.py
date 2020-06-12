@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from __future__ import division
+from __future__ import division, print_function
 import argparse
 
 # 6x8 corners
@@ -79,8 +79,8 @@ if __name__=='__main__':
 
     total_width = n_columns*width
     total_height = n_rows*height
-    print 'total_width %g mm'%total_width
-    print 'total_height %g mm'%total_height
+    print('total_width %g mm'%total_width)
+    print('total_height %g mm'%total_height)
 
     laser = args.laser
 
@@ -118,7 +118,7 @@ if __name__=='__main__':
     fname_svg = 'checkerboard.svg'
     with open(fname_svg,mode='w') as fd:
         fd.write(s)
-    print 'saved',fname_svg
+    print('saved',fname_svg)
 
     if args.pdf:
         import subprocess
@@ -127,4 +127,4 @@ if __name__=='__main__':
 
         cmd = 'inkscape -f %s --export-pdf=%s'%(fname_svg, fname_pdf)
         subprocess.check_call(cmd,shell=True)
-        print 'saved',fname_pdf
+        print('saved',fname_pdf)
