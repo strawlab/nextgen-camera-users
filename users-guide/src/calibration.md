@@ -28,6 +28,9 @@ your sensor (from intensity values 0 to 255) with very little clipping.
 
 ## Step 2: run "Checkerboard Calibration" to get the camera intrinsic parameters
 
+(There is a script to draw checkerboards as SVG files:
+[`draw_checkerboard_svg.py`](https://github.com/strawlab/nextgen-camera-users/blob/master/scripts/draw_checkerboard_svg.py).)
+
 In Strand Cam, there is a region called "Checkerboard Calibration" which allows
 you to calibrate the camera intrinsic parameters. Show a checkerboard to the
 camera. You must enter your the checkerboard parameters into the user interface.
@@ -35,9 +38,9 @@ For example, a standard 8x8 checkerboard would have 7x7 corners. Try to show the
 checkerboard at different distances and angles. Do not forget to show the
 checkerboard corners in the corners of the camera field of view. There is a
 field which shows the number of checkerboard collected - this should increase as
-the system detects checkerboards. When you have gathered a good set of
-checkerboards, click the "Perform and Save Calibration" button. The results of
-this calibration are saved to the directory
+the system detects checkerboards. When you have gathered a good set of (say, at
+least 10) checkerboards, click the "Perform and Save Calibration" button. The
+results of this calibration are saved to the directory
 `$HOME/.config/strand-cam/camera_info`.
 
 Repeat this for all cameras before proceeding to the next step.
