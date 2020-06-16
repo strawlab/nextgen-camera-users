@@ -344,7 +344,7 @@ with open_file_safe(dest_filename, mode="w", title="tracked Flydra data file",
         convert_program = 'compute-flydra1-compat'
         if not os.path.exists(computed_dir(data_dir)):
             cmd = [convert_program,'--help']
-            devnull = open('/dev/null',mode='w')
+            devnull = open(os.devnull,mode='w')
             try:
                 subprocess.check_call(cmd, stdout=devnull, stderr=devnull)
             except OSError as err:
