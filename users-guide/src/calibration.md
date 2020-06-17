@@ -22,6 +22,10 @@ Setup camera position, zoom, focus (using an object in the tracking volume) and
 aperture (slightly stopped down from wide-open). Exposure times and gains are
 set in Strand Cam for each camera individually. Note that if you intend to run
 at 100 frames per second, exposure times must be less than 10 milliseconds.
+These settings (exposure time and gain) are (unfortunately) currently not saved
+in any file, and can be set only in the camera settings GUI (in the browser).
+The camera keeps these values persistently when it is on, but if it has been
+power cycled, it will reset to new values.
 
 Try to a luminance distribution which extends across the entire dynamic range of
 your sensor (from intensity values 0 to 255) with very little clipping.
