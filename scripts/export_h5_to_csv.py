@@ -33,6 +33,7 @@ with tables.open_file(fname) as h5:
     # cam info ------
     cam_info = h5.root.cam_info[:]
     df = pandas.DataFrame(cam_info)
+    df["cam_id"] = df["cam_id"].str.decode('ascii')
     csv_fname = os.path.join(outdir, 'cam_info.csv')
     df.to_csv(csv_fname, index=False, float_format='%r')
 
