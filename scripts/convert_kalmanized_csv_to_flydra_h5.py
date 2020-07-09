@@ -12,7 +12,7 @@ import errno
 
 import numpy as np
 import pandas as pd
-import imageio
+import imageio # On Ubuntu 16 with Python 2.x: pip install imageio==2.3 --no-deps
 
 import flydra_core.kalman.flydra_kalman_utils as flydra_kalman_utils
 import flydra_core.reconstruct
