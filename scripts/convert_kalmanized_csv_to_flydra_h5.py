@@ -263,6 +263,17 @@ def do_experiment_info(data_dir, h5file):
             save_row(experiment_info_table.row, row, experiment_info_table.colnames)
     return [experiment_info_fname]
 
+def do_histograms(data_dir, h5file):
+    result = []
+    latency_fname = os.path.join(data_dir, "reconstruct_latency_usec.hlog")
+    if os.path.exists(latency_fname):
+        print("not processing latency histograms")
+        result.append(latency_fname)
+    reproj_fname = os.path.join(data_dir, "reprojection_distance_100x_pixels.hlog")
+    if os.path.exists(reproj_fname):
+        print("not processing reprojection histograms")
+        result.append(reproj_fname)
+    return result
 
 def do_cam_info(data_dir, h5file):
     cam_info_fname = os.path.join(data_dir, "cam_info.csv")
@@ -431,6 +442,7 @@ with open_file_safe(
     converted.extend(do_trigger_clock_info(data_dir, h5file))
     converted.extend(do_experiment_info(data_dir, h5file))
     converted.extend(do_cam_info(data_dir, h5file))
+    converted.extend(do_histograms(data_dir, h5file))
     if not do_2d_only:
         converted.extend(do_calibration(data_dir, h5file))
     if not do_2d_only:
