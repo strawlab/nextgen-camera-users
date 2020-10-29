@@ -9,6 +9,7 @@ import warnings
 import tempfile
 import zipfile
 import errno
+import shutil
 
 import numpy as np
 import pandas as pd
@@ -40,6 +41,12 @@ dest_filename = data_src + ".h5"
 d2d_r0 = None
 d2d_r1 = None
 
+def zipdir(dirname):
+    zipname = dirname + ".zip"
+    assert(not os.path.exists(zipname))
+    cmd = ["zip","-r",os.path.join("..",zipname),"."]
+    subprocess.check_call(cmd, cwd=dirname)
+    shutil.rmtree(dirname)
 
 def convert_pd_to_np(df):
     colnames = tuple(df.columns)
@@ -263,7 +270,6 @@ def do_experiment_info(data_dir, h5file):
             save_row(experiment_info_table.row, row, experiment_info_table.colnames)
     return [experiment_info_fname]
 
-
 def do_cam_info(data_dir, h5file):
     cam_info_fname = os.path.join(data_dir, "cam_info.csv")
     cam_info_fname = pick_csvgz_or_csv(cam_info_fname)
@@ -368,14 +374,19 @@ if not os.path.exists(data_src):
     print("ERROR: input does not exist: %s" % data_src, file=sys.stderr)
     sys.exit(1)
 
+also_delete_braidz = None
 if not os.path.isdir(data_src):
-    assert data_src.endswith(".braidz")
+    braidz = ".braidz"
+    assert data_src.endswith(braidz)
     zipname = data_src
     data_dir = tempfile.mkdtemp(suffix=".braid")
     archive = zipfile.ZipFile(zipname, mode="r")
     archive.extractall(data_dir)
+    unconverted_output_dir = os.path.join(data_src[:-len(braidz)]+'.unconverted')
+    also_delete_braidz = data_src
 else:
     data_dir = data_src
+    unconverted_output_dir = os.path.join(data_src+'.unconverted')
 
 delete_original = not args.no_delete
 with open_file_safe(
@@ -442,11 +453,13 @@ hmm_files = set(converted) - set(all_files)
 if len(hmm_files) > 0:
     raise RuntimeError("Delete file(s) that do not exist? %s" % hmm_files)
 
-ignored = [
+unconverted = [
     os.path.join(data_dir, "braid_metadata.yml"),
     os.path.join(data_dir, "README.md"),
+    os.path.join(data_dir, "reprojection_distance_100x_pixels.hlog"),
+    os.path.join(data_dir, "reconstruct_latency_usec.hlog"),
 ]
-leftover_files = set(all_files) - (set(converted) | set(ignored))
+leftover_files = set(all_files) - (set(converted) | set(unconverted))
 if len(leftover_files) > 0:
     print("ERROR: unconverted file(s) detected: %s" % leftover_files, file=sys.stderr)
     sys.exit(1)
@@ -454,7 +467,21 @@ if len(leftover_files) > 0:
 if delete_original:
     for f in converted:
         os.unlink(f)
-    for f in ignored:
-        if os.path.exists(f):
-            os.unlink(f)
+    if len(unconverted) > 0:
+        try:
+            os.makedirs(unconverted_output_dir)
+        except OSError as e:
+            if e.errno == errno.EEXIST:
+                pass
+            else:
+                raise
+        for f in unconverted:
+            shutil.move(f, unconverted_output_dir)
+        print("saved unconverted files to %s"%(unconverted_output_dir,))
+        zipdir(unconverted_output_dir)
+    print("deleting %s"%data_dir)
     recursive_rmdir(data_dir)
+
+    if also_delete_braidz is not None:
+        print("deleting %s"%also_delete_braidz)
+        os.unlink(also_delete_braidz)
