@@ -44,8 +44,9 @@ with tables.open_file(fname) as h5:
     image_table = h5.root.images
 
     for row in h5.root.cam_info:
-        cam_id = str(row["cam_id"], "utf-8")
-        print("cam_id", cam_id)
+        cam_id = row["cam_id"]
+        if sys.version_info.major >= 3:
+            cam_id = str(cam_id, "utf-8")
 
         arr = getattr(image_table, cam_id)
         image = arr.read()
