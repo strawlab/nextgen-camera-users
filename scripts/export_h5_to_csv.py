@@ -8,6 +8,7 @@ import os
 import errno
 import tables
 import pandas
+import imageio
 from collections import defaultdict
 import flydra_analysis.a2.calibration_to_xml as calibration_to_xml
 
@@ -15,8 +16,10 @@ fname = sys.argv[1]
 outdir, ext = os.path.splitext(fname)
 assert ext == ".h5" or ext == ".hdf5"
 
+images_dir = os.path.join(outdir, "images")
+
 try:
-    os.makedirs(outdir)
+    os.makedirs(images_dir) # also makes outdir
 except OSError as err:
     if err.errno == errno.EEXIST:
         pass
@@ -37,6 +40,20 @@ with tables.open_file(fname) as h5:
     csv_fname = os.path.join(outdir, "cam_info.csv")
     df.to_csv(csv_fname, index=False, float_format="%r")
 
+    # images
+    image_table = h5.root.images
+
+    for row in h5.root.cam_info:
+        cam_id = str(row["cam_id"], "utf-8")
+        print("cam_id", cam_id)
+
+        arr = getattr(image_table, cam_id)
+        image = arr.read()
+        if image.ndim == 3 and image.shape[2] == 1:
+            # only a single "color" channel
+            image = image[:, :, 0]  # drop a dimension (3D->2D)
+        image_fname = os.path.join(images_dir, "%s.png" % (cam_id,))
+        imageio.imsave(image_fname, image)
 
 class Options:
     pass
