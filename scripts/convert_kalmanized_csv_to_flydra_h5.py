@@ -374,6 +374,7 @@ if not os.path.exists(data_src):
     print("ERROR: input does not exist: %s" % data_src, file=sys.stderr)
     sys.exit(1)
 
+also_delete_braidz = None
 if not os.path.isdir(data_src):
     braidz = ".braidz"
     assert data_src.endswith(braidz)
@@ -382,6 +383,7 @@ if not os.path.isdir(data_src):
     archive = zipfile.ZipFile(zipname, mode="r")
     archive.extractall(data_dir)
     unconverted_output_dir = os.path.join(data_src[:-len(braidz)]+'.unconverted')
+    also_delete_braidz = data_src
 else:
     data_dir = data_src
     unconverted_output_dir = os.path.join(data_src+'.unconverted')
@@ -477,4 +479,9 @@ if delete_original:
             shutil.move(f, unconverted_output_dir)
         print("saved unconverted files to %s"%(unconverted_output_dir,))
         zipdir(unconverted_output_dir)
+    print("deleting %s"%data_dir)
     recursive_rmdir(data_dir)
+
+    if also_delete_braidz is not None:
+        print("deleting %s"%also_delete_braidz)
+        os.unlink(also_delete_braidz)
