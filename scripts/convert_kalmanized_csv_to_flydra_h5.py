@@ -41,6 +41,12 @@ dest_filename = data_src + ".h5"
 d2d_r0 = None
 d2d_r1 = None
 
+def zipdir(dirname):
+    zipname = dirname + ".zip"
+    assert(not os.path.exists(zipname))
+    cmd = ["zip","-r",os.path.join("..",zipname),"."]
+    subprocess.check_call(cmd, cwd=dirname)
+    shutil.rmtree(dirname)
 
 def convert_pd_to_np(df):
     colnames = tuple(df.columns)
@@ -470,4 +476,5 @@ if delete_original:
         for f in unconverted:
             shutil.move(f, unconverted_output_dir)
         print("saved unconverted files to %s"%(unconverted_output_dir,))
+        zipdir(unconverted_output_dir)
     recursive_rmdir(data_dir)
