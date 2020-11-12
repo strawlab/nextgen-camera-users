@@ -7,6 +7,22 @@ parameters, and so on.
 
 An online viewer for `.braidz` files is at [braidz.strawlab.org](https://braidz.strawlab.org/).
 
+## Analysis scripts
+
+The following plots were made with the file [20201112_133722.braidz](http://strawlab-cdn.com/assets/20201112_133722.braidz).
+
+### `braid-analysis-plot-data2d-timeseries.py`
+
+![braid-analysis-plot-data2d-timeseries.png](braid-analysis-plot-data2d-timeseries.png)
+
+### `braid-analysis-plot-kalman-estimates-timeseries.py`
+
+![braid-analysis-plot-kalman-estimates-timeseries.png](braid-analysis-plot-kalman-estimates-timeseries.png)
+
+### `braid-analysis-plot3d.py`
+
+![braid-analysis-plot3d.png](braid-analysis-plot3d.png)
+
 ## File Format
 
 A `.braidz` file is actually a ZIP file with specific contents. It can be
