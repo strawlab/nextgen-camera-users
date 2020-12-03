@@ -195,7 +195,7 @@ Using this calibration, you can perform 3D tracking of the data with:
 
 You can view these results with:
 
-    DATAFILE_RETRACKED=`python -c "print '${DATAFILE}'[:-3]"`.kalmanized.h5
+    DATAFILE_RETRACKED=`python -c "print('${DATAFILE}'[:-3])"`.kalmanized.h5
     flydra_analysis_plot_timeseries_2d_3d ${DATAFILE} -k ${DATAFILE_RETRACKED} --disable-kalman-smoothing
 
 Now you have a working calibration, which is NOT aligned or scaled to the
