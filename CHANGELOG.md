@@ -1,3 +1,30 @@
+## 0.8.2 - 2020-12-04
+
+### Fixed
+
+* Support Basler Ace2 cameras
+
+## 0.8.1 - 2020-11-15
+
+### Fixed
+
+* force MKV frame width to be power of 2 when saving in strand-cam.
+* fix braidz parser not to fail on "unknown" fps.
+* revert to use NVENCAPI_VERSION 8 to support older drivers.
+
+## 0.8.0 - 2020-11-03
+
+### Added
+
+* Update to Pylon 6.1.1
+* Raise error dialog in strand-cam browser UI if frame processing is falling behind frame production
+* Rewritten tracking core. (Numerically it produces similar or identical results, but the code is much better organized for future updates.)
+* Several small feature and bug fixes.
+
+### Changed
+
+* For encoding h264 video, use NVENCAPI_VERSION 11, which is recent from nvidia.
+
 ## 0.7.4 - 2020-03-01
 
 ### Added
