@@ -1,3 +1,31 @@
+## 0.9.0 - 2021-01-04
+
+### Added
+
+* When braid is run without a hardware trigger box listed in the .toml config
+  file, it will allow running in a "fake synchronized" mode in which most
+  aspects of a triggerbox are emulated. If precise synchronization is not
+  necessary, this should enable tracking without synchronization hardware. It
+  also opens the door to using hardware which cannot be precisely synchronized
+  such as inexpensive cameras without the ability to have an external trigger.
+
+### Fixed
+
+* Checkerboard calibration in strand-cam is much faster and uses sub-pixel
+  corner localization. It should behave identically to the calibration in ROS
+  camera_calibration.calibrator.MonoCalibrator now.
+
+### Changed
+
+* The log output format has changed slightly as we are now using the
+  [tracing](https://crates.io/crates/tracing) library for logging.
+* Migrate some error handling to the `thiserror` and `anyhow` crates (from the
+  `failure` crate). To continue to provide tracebacks when the RUST_BACKTRACE
+  environment variable is set, binaries for release are build with rust nightly
+  from 2021-01-03.
+* Several of the internal crates have been individually licensed under
+  Apache-2.0/MIT or similar licenses.
+
 ## 0.8.2 - 2020-12-04
 
 ### Fixed
